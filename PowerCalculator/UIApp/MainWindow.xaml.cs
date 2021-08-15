@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.FileUpload;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace UIApp
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		IDialogBrowser fileBrowser = new FileDialog();
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -28,17 +31,29 @@ namespace UIApp
 		//Otvara se prozor za odabir csv fajla za prognoziranu potrosnju
 		private void browseExpetedPower_Click(object sender, RoutedEventArgs e)
 		{
-
+			expetedPowerTextBlock.Text = fileBrowser.GetDialogPathName();
 		}
 
 		//Otvara se prozor za odabir csv fajla za ostvarenu potrosnju
 		private void browseActualPower_Click(object sender, RoutedEventArgs e)
 		{
-
+			actualPowerTextBlock.Text = fileBrowser.GetDialogPathName();
 		}
 
 		//Validacija i primenjivanje podataka
 		private void importButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		//Izracunati podaci se exportuju u XML
+		private void exportToXML_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		//Izracunava potrosnju i ispisuje na ekran
+		private void calculatePower_Click(object sender, RoutedEventArgs e)
 		{
 
 		}
