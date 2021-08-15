@@ -99,6 +99,10 @@
       <Project>{6dba424c-5020-4400-a0a7-b6c139e955ae}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceEngine\ServiceEngine.csproj">
+      <Project>{964D5B7C-48B0-470F-A6BA-86FDB8FB545B}</Project>
+      <Name>ServiceEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
