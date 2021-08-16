@@ -1,4 +1,5 @@
 ﻿using Common.FileUpload;
+using Common.Helper;
 using Common.Logging;
 using ServiceEngine.ImportFiles;
 using System;
@@ -24,8 +25,9 @@ namespace UIApp
 	public partial class MainWindow : Window
 	{
 		private string message;
-		private List<string> regions = new List<string>();
+		private HashSet<string> regions = new HashSet<string>();
 
+		private DataTypeParser dataTypeParser;
 		private FileDialog fileDialog;
 		private PowerImporter powerImporter;
 
@@ -33,7 +35,8 @@ namespace UIApp
 		{
 			InitializeComponent();
 
-			fileDialog = new FileDialog();
+			dataTypeParser = new DataTypeParser();
+			fileDialog = new FileDialog(dataTypeParser);
 			powerImporter = new PowerImporter(fileDialog);
 		}
 
@@ -62,7 +65,15 @@ namespace UIApp
 				return;
 			}
 
-			powerImporter.CollectData(expetedPowerTextBlock.Text, actualPowerTextBlock.Text);
+			try
+			{
+				powerImporter.CollectData(expetedPowerTextBlock.Text, actualPowerTextBlock.Text);
+			}
+			catch (Exception ex)
+			{
+				errorTextBlock.Text = ex.Message;
+				LogHelper.Log(Operation.Warning, ex.Message);
+			}
 		}
 
 		//Izracunava potrosnju i ispisuje na ekran

@@ -1,4 +1,5 @@
-﻿using Common.Logging;
+﻿using Common.Helper;
+using Common.Logging;
 using Common.Model;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,13 @@ namespace Common.FileUpload
 {
 	public class FileDialog
 	{
+		private DataTypeParser dataTypeParser;
+
+		public FileDialog(DataTypeParser dataTypeParser)
+		{
+			this.dataTypeParser = dataTypeParser;
+		}
+
 		//Otvara se prozor za odabir csv fajla za import podataka
 		//Kao rezultat vraca se putanja do fajla
 		public string GetDialogPathName()
@@ -41,9 +49,8 @@ namespace Common.FileUpload
 			}
 			catch
 			{
-				//Ako ne pronadje fajl, vrati praznu listu
-				LogHelper.Log(Operation.Warning, "Csv files aren't loaded successfully");
-				return powerRecords;
+				//Ako ne pronadje fajl, baci exception
+				throw new Exception("Csv files aren't loaded successfully");
 			}
 
 			//Obrisi zaglavlje
@@ -56,37 +63,19 @@ namespace Common.FileUpload
 				PowerRecord entity = new PowerRecord();
 
 				//Posto se sve u fajlu cuva kao string, sad je potrebno taj string konvertovati u broj
-				entity.Hour = int.Parse(part[0]);
+				entity.Hour = dataTypeParser.ConvertIntFromString(part[0]);
 
 				//Posto se sve u fajlu cuva kao string, sad je potrebno taj string konvertovati u broj
-				entity.Load = int.Parse(part[1]);
+				entity.Load = dataTypeParser.ConvertIntFromString(part[1]);
 
 				entity.Region = part[2];
-				entity.Date = GetDateFromFileName(path);
+				entity.Date = dataTypeParser.GetDateFromFileName(path);
 				entity.Timestamp = DateTime.Now;
 
 				powerRecords.Add(entity);
 			}
 
 			return powerRecords;
-		}
-
-		//Prosledi se puna putanja fajla, kao rezultat se vraca samo naziv fajla
-		public string GetFileNameFromPath(string path)
-		{
-			string[] pathParts = path.Split('\\');
-			string[] fileParts = pathParts[pathParts.Length - 1].Split('.');
-
-			return fileParts[0];
-		}
-
-		//Izvlacimo datim iz imena fajla
-		public DateTime GetDateFromFileName(string path)
-		{
-			string fileName = GetFileNameFromPath(path);
-			string[] part = fileName.Split('_');
-
-			return new DateTime(int.Parse(part[1]), int.Parse(part[2]), int.Parse(part[3]));
 		}
 	}
 }
