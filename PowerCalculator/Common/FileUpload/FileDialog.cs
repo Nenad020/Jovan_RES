@@ -70,7 +70,7 @@ namespace Common.FileUpload
 
 				entity.Region = part[2];
 				entity.Date = dataTypeParser.GetDateFromFileName(path);
-				entity.Timestamp = DateTime.Now;
+				entity.Timestamp = DateTime.Now.ToString();
 
 				powerRecords.Add(entity);
 			}

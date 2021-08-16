@@ -1,5 +1,6 @@
 ﻿using Common.FileUpload;
 using Common.Model;
+using DatabaseAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace ServiceEngine.ImportFiles
 	public class PowerImporter
 	{
 		private FileDialog fileDialog;
+		private SqliteDataAccess sqliteDataAccess;
 
-		public PowerImporter(FileDialog fileDialog)
+		public PowerImporter(FileDialog fileDialog, SqliteDataAccess sqliteDataAccess)
 		{
 			this.fileDialog = fileDialog;
+			this.sqliteDataAccess = sqliteDataAccess;
 		}
 
 		//Funkcija koja poziva funkcije za proveru validacije i funkcije za upis podataka u bazu
@@ -30,6 +33,8 @@ namespace ServiceEngine.ImportFiles
 			ValidateDataFromFiles(expetedPowerImporters, actualPowerImporters);
 
 			//Sledi upis u bazu
+			sqliteDataAccess.SaveRecords(expetedPowerImporters, "ExpetedConsumption");
+			sqliteDataAccess.SaveRecords(actualPowerImporters, "ActualConsumption");
 		}
 
 		//Racunamo koliko postoji unetih sati po regionu unutar jednog fajla

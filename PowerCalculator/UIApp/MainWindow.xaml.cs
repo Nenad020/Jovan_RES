@@ -1,6 +1,7 @@
 ﻿using Common.FileUpload;
 using Common.Helper;
 using Common.Logging;
+using DatabaseAccess;
 using ServiceEngine.ImportFiles;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace UIApp
 		private HashSet<string> regions = new HashSet<string>();
 
 		private DataTypeParser dataTypeParser;
+		private SqliteDataAccess sqliteDataAccess;
 		private FileDialog fileDialog;
 		private PowerImporter powerImporter;
 
@@ -36,14 +38,17 @@ namespace UIApp
 			InitializeComponent();
 
 			dataTypeParser = new DataTypeParser();
+			sqliteDataAccess = new SqliteDataAccess();
 			fileDialog = new FileDialog(dataTypeParser);
-			powerImporter = new PowerImporter(fileDialog);
+			powerImporter = new PowerImporter(fileDialog, sqliteDataAccess);
 		}
 
 		//Otvara se prozor za odabir csv fajla za prognoziranu potrosnju
 		private void browseExpetedPower_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
+
+			LogHelper.Log(Operation.Info, "Browsing for expeted power consumption .csv file");
 			expetedPowerTextBlock.Text = fileDialog.GetDialogPathName();
 		}
 
@@ -51,6 +56,8 @@ namespace UIApp
 		private void browseActualPower_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
+
+			LogHelper.Log(Operation.Info, "Browsing for actual power consumption .csv file");
 			actualPowerTextBlock.Text = fileDialog.GetDialogPathName();
 		}
 
@@ -72,20 +79,29 @@ namespace UIApp
 			catch (Exception ex)
 			{
 				errorTextBlock.Text = ex.Message;
-				LogHelper.Log(Operation.Warning, ex.Message);
+				LogHelper.Log(Operation.Error, ex.Message);
+				return;
 			}
+
+			message = "You have successfully imported files in db!";
+			LogHelper.Log(Operation.Info, message);
+			WriteSuccessfullyMessage(message);
 		}
 
 		//Izracunava potrosnju i ispisuje na ekran
 		private void calculatePower_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
+		
+			//TODO
 		}
 
 		//Izracunati podaci se exportuju u XML
 		private void exportToXML_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
+
+			//TODO
 		}
 
 		//Proveravamo da li su uneti import fajlovi
@@ -107,6 +123,12 @@ namespace UIApp
 		private void ResetErrorText()
 		{
 			errorTextBlock.Text = string.Empty;
+		}
+
+		//Ispis poruke na popup ekran
+		private void WriteSuccessfullyMessage(string message)
+		{
+			MessageBox.Show(message);
 		}
 	}
 }
