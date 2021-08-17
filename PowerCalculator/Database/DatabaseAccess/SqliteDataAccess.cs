@@ -21,6 +21,14 @@ namespace DatabaseAccess
                 return output.ToList();
             }
         }
+        public List<string> LoadRegions(string table)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<string>($"select distinct Region from {table}", new DynamicParameters());
+                return output.ToList();
+            }
+        }
 
         public void SaveRecords(List<PowerRecord> powerRecords, string table)
         {

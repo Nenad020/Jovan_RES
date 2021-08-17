@@ -26,7 +26,7 @@ namespace UIApp
 	public partial class MainWindow : Window
 	{
 		private string message;
-		private HashSet<string> regions = new HashSet<string>();
+		public List<string> regions = new List<string>();
 
 		private DataTypeParser dataTypeParser;
 		private SqliteDataAccess sqliteDataAccess;
@@ -100,6 +100,12 @@ namespace UIApp
 		private void exportToXML_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
+			LogHelper.Log(Operation.Info, "Exporting result to XML!");
+
+			if (!ValidateOutputTextBlock())
+			{
+				return;
+			}
 
 			//TODO
 		}
@@ -117,6 +123,34 @@ namespace UIApp
 			}
 
 			return true;
+		}
+
+		//Proveravamo da li postoji nesto na ekranu za ispis
+		private bool ValidateOutputTextBlock()
+		{
+			if (outputTextBlock.Text == string.Empty)
+			{
+				message = "Output screen is empty, please calculate first power consumption then export it to XML!";
+				errorTextBlock.Text = message;
+				LogHelper.Log(Operation.Error, message);
+
+				return false;
+			}
+
+			return true;
+		}
+
+		//Iz baze izvlacimo sve regione i osvezujemo listu na UI
+		private void refreshRegions_Click(object sender, RoutedEventArgs e)
+		{
+			ResetErrorText();
+			LogHelper.Log(Operation.Info, "Refreshing regions combobox started!");
+
+			regions.Clear();
+			regions = sqliteDataAccess.LoadRegions("ExpetedConsumption");
+
+			regionComboBox.ItemsSource = regions;
+			LogHelper.Log(Operation.Info, "Refreshing regions combobox ended!");
 		}
 
 		//Resetujemo tekst za greske
