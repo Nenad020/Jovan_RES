@@ -22,6 +22,19 @@ namespace Common.Helper
 			}
 		}
 
+		//Pretvara string u vreme tj datetime
+		public DateTime ConvertDateTimeFromString(string data)
+		{
+			try
+			{
+				return DateTime.Parse(data);
+			}
+			catch
+			{
+				throw new Exception("Failed to convert date time type from string type");
+			}
+		}
+
 		//Izvlacimo datum iz imena fajla
 		//Primer => path = D:\Projekti\RES\Jovan_RES\ImportFiles\ostv_2020_05_07.csv
 		public string GetDateFromFileName(string path)

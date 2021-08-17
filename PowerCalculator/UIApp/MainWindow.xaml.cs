@@ -92,8 +92,35 @@ namespace UIApp
 		private void calculatePower_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
-		
-			//TODO
+			LogHelper.Log(Operation.Info, "Calculating power consumption started!");
+
+			if (!ValidatePowerConsumptionInputs())
+			{
+				return;
+			}
+
+			DateTime fromDate = dataTypeParser.ConvertDateTimeFromString(fromDatePicker.Text);
+			DateTime toDate = dataTypeParser.ConvertDateTimeFromString(toDatePicker.Text);
+
+			if (!CheckDatesValues(fromDate, toDate))
+			{
+				return;
+			}
+
+			try
+			{
+				//powerImporter.CollectData(expetedPowerTextBlock.Text, actualPowerTextBlock.Text);
+			}
+			catch (Exception ex)
+			{
+				errorTextBlock.Text = ex.Message;
+				LogHelper.Log(Operation.Error, ex.Message);
+				return;
+			}
+
+			message = "Calculating power consumption ended!";
+			LogHelper.Log(Operation.Info, message);
+			WriteSuccessfullyMessage(message);
 		}
 
 		//Izracunati podaci se exportuju u XML
@@ -116,6 +143,36 @@ namespace UIApp
 			if (expetedPowerTextBlock.Text == string.Empty || actualPowerTextBlock.Text == string.Empty)
 			{
 				message = "Please select excel files first!";
+				errorTextBlock.Text = message;
+				LogHelper.Log(Operation.Error, message);
+
+				return false;
+			}
+
+			return true;
+		}
+
+		//Proveravamo da li su uneti podaci za izracunavanje potrosnje snage (vreme i region)
+		private bool ValidatePowerConsumptionInputs()
+		{
+			if (fromDatePicker.Text == string.Empty || toDatePicker.Text == string.Empty || regionComboBox.Text == string.Empty)
+			{
+				message = "Please select necessary inputs first!";
+				errorTextBlock.Text = message;
+				LogHelper.Log(Operation.Error, message);
+
+				return false;
+			}
+
+			return true;
+		}
+
+		//Proveravamo da li je pocetno vreme manje od krajnjeg
+		private bool CheckDatesValues(DateTime from, DateTime to)
+		{
+			if (from > to)
+			{
+				message = "Starting date needs to be lower then finished date!";
 				errorTextBlock.Text = message;
 				LogHelper.Log(Operation.Error, message);
 
