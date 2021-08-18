@@ -81,7 +81,9 @@
 							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
 
-						<TextBlock x:Name="outputTextBlock" Background="OldLace"/>
+						<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+							<TextBlock x:Name="outputTextBlock" Background="OldLace"/>
+						</ScrollViewer>
 						<Button Grid.Column="1" Content="Export to XML" x:Name="exportToXML" Click="exportToXML_Click" Width="100" Height="50" VerticalAlignment="Bottom"/>
 					</Grid>
 				</Grid>

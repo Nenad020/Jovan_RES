@@ -123,6 +123,8 @@ namespace UIApp
 				return;
 			}
 
+			WriteOutputModelOnScreen();
+
 			message = "Calculating power consumption ended!";
 			LogHelper.Log(Operation.Info, message);
 			WriteSuccessfullyMessage(message);
@@ -225,6 +227,24 @@ namespace UIApp
 		private void WriteSuccessfullyMessage(string message)
 		{
 			MessageBox.Show(message);
+		}
+
+		private void WriteOutputModelOnScreen()
+		{
+			outputTextBlock.Text = string.Empty;
+
+			outputTextBlock.Text += "Result:\n";
+			outputTextBlock.Text += $"Mean deviation is: {outputModel.MeanDeviation}\n";
+			outputTextBlock.Text += $"Square deviation is: {outputModel.SquareDeviation}\n";
+
+			foreach (var key in outputModel.CalculatedPowers)
+			{
+				outputTextBlock.Text += $"Calculated absolute average power consumption for date: {key.Key.ToString("dd/MM/yyyy")}\n";
+				foreach (var value in key.Value)
+				{
+					outputTextBlock.Text += $"Hour {value.Hour}, value: {value.AbsoluteValue}\n";
+				}
+			}
 		}
 	}
 }
