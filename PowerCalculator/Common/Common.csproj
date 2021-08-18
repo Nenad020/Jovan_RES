@@ -50,6 +50,7 @@
     <Compile Include="Model\ConsumptionRecord.cs" />
     <Compile Include="Model\OutputModel.cs" />
     <Compile Include="Model\PowerRecord.cs" />
+    <Compile Include="Model\CalculatedPower.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

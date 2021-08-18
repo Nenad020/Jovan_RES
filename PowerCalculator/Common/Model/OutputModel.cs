@@ -8,7 +8,7 @@ namespace Common.Model
 {
 	public class OutputModel
 	{
-		public Dictionary<DateTime, List<ConsumptionRecord>> CalculatedPowers { get; set; }
+		public List<CalculatedPower> CalculatedPowers { get; set; }
 		public decimal MeanDeviation { get; set; }
 		public double SquareDeviation { get; set; }
 
@@ -16,7 +16,7 @@ namespace Common.Model
 		{
 		}
 
-		public OutputModel(Dictionary<DateTime, List<ConsumptionRecord>> calculatedPowers, decimal meanDeviation, double squareDeviation)
+		public OutputModel(List<CalculatedPower> calculatedPowers, decimal meanDeviation, double squareDeviation)
 		{
 			CalculatedPowers = calculatedPowers;
 			MeanDeviation = meanDeviation;

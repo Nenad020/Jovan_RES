@@ -14,7 +14,7 @@ namespace Common.Logging
 		public override void Log(Operation operation, string msg)
 		{
 			//Relativna putanja fajla u kome se upisuje promene
-			string path = $"../../../../Logs/log.txt";
+			string path = "../../../../Logs/log.txt";
 
 			lock (lockObj)
 			{

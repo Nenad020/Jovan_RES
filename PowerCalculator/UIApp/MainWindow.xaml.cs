@@ -141,7 +141,33 @@ namespace UIApp
 				return;
 			}
 
-			//TODO
+			try
+			{
+				fileDialog.SaveToXML(outputModel);
+			}
+			catch (Exception ex)
+			{
+				errorTextBlock.Text = ex.Message;
+				LogHelper.Log(Operation.Error, ex.Message);
+				return;
+			}
+
+			message = "You have successfully exported files to XML!";
+			LogHelper.Log(Operation.Info, message);
+			WriteSuccessfullyMessage(message);
+		}
+
+		//Iz baze izvlacimo sve regione i osvezujemo listu na UI
+		private void refreshRegions_Click(object sender, RoutedEventArgs e)
+		{
+			ResetErrorText();
+			LogHelper.Log(Operation.Info, "Refreshing regions combobox started!");
+
+			regions.Clear();
+			regions = sqliteDataAccess.LoadRegions("ExpetedConsumption");
+
+			regionComboBox.ItemsSource = regions;
+			LogHelper.Log(Operation.Info, "Refreshing regions combobox ended!");
 		}
 
 		//Proveravamo da li su uneti import fajlovi
@@ -204,19 +230,6 @@ namespace UIApp
 			return true;
 		}
 
-		//Iz baze izvlacimo sve regione i osvezujemo listu na UI
-		private void refreshRegions_Click(object sender, RoutedEventArgs e)
-		{
-			ResetErrorText();
-			LogHelper.Log(Operation.Info, "Refreshing regions combobox started!");
-
-			regions.Clear();
-			regions = sqliteDataAccess.LoadRegions("ExpetedConsumption");
-
-			regionComboBox.ItemsSource = regions;
-			LogHelper.Log(Operation.Info, "Refreshing regions combobox ended!");
-		}
-
 		//Resetujemo tekst za greske
 		private void ResetErrorText()
 		{
@@ -237,10 +250,10 @@ namespace UIApp
 			outputTextBlock.Text += $"Mean deviation is: {outputModel.MeanDeviation}\n";
 			outputTextBlock.Text += $"Square deviation is: {outputModel.SquareDeviation}\n";
 
-			foreach (var key in outputModel.CalculatedPowers)
+			foreach (var calculatedPower in outputModel.CalculatedPowers)
 			{
-				outputTextBlock.Text += $"Calculated absolute average power consumption for date: {key.Key.ToString("dd/MM/yyyy")}\n";
-				foreach (var value in key.Value)
+				outputTextBlock.Text += $"Calculated absolute average power consumption for date: {calculatedPower.Date.ToString("dd/MM/yyyy")}\n";
+				foreach (var value in calculatedPower.AverageRecords)
 				{
 					outputTextBlock.Text += $"Hour {value.Hour}, value: {value.AbsoluteValue}\n";
 				}

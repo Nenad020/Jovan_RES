@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace Common.FileUpload
 {
@@ -76,6 +77,21 @@ namespace Common.FileUpload
 			}
 
 			return powerRecords;
+		}
+
+		public void SaveToXML(OutputModel outputModel)
+		{
+			try
+			{
+				XmlSerializer serializer = new XmlSerializer(typeof(OutputModel));
+				StreamWriter writer = new StreamWriter("../../../../output.xml");
+				serializer.Serialize(writer, outputModel);
+				writer.Close();
+			}
+			catch
+			{
+				throw new Exception("Exporting result to xml has failed!");
+			}
 		}
 	}
 }

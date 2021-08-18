@@ -28,7 +28,7 @@ namespace ServiceEngine
 			expetedPowerImporters = CheckRegionRange(from, to, region, expetedPowerImporters);
 			actualPowerImporters = CheckRegionRange(from, to, region, actualPowerImporters);
 
-			Dictionary<DateTime, List<ConsumptionRecord>> calculatedPowers = CalculateAbsoluteValues(expetedPowerImporters, actualPowerImporters);
+			List<CalculatedPower> calculatedPowers = CalculateAbsoluteValues(expetedPowerImporters, actualPowerImporters);
 
 			decimal calculatedMeanDeviation = CalculateAbsoluteMeanDeviation(calculatedPowers);
 			double calculatedSquareDeviation = CalculateSquareDeviation(calculatedPowers);
@@ -53,9 +53,9 @@ namespace ServiceEngine
 			return output;
 		}
 
-		public Dictionary<DateTime, List<ConsumptionRecord>> CalculateAbsoluteValues(List<PowerRecord> expeted, List<PowerRecord> actual)
+		public List<CalculatedPower> CalculateAbsoluteValues(List<PowerRecord> expeted, List<PowerRecord> actual)
 		{
-			Dictionary<DateTime, List<ConsumptionRecord>> output = new Dictionary<DateTime, List<ConsumptionRecord>>();
+			List<CalculatedPower> output = new List<CalculatedPower>();
 
 			for (int i = 0; i < expeted.Count; i++)
 			{
@@ -63,16 +63,17 @@ namespace ServiceEngine
 				decimal averageValue = CalculateValuePerHour(expeted[i].Load, actual[i].Load);
 				decimal averageAbsoluteValue = CalculateAbsoluteValuePerHour(averageValue);
 
-				if (output.ContainsKey(date))
+				CalculatedPower item = output.FirstOrDefault(x => x.Date == date);
+				if (item != null)
 				{
-					output[date].Add(new ConsumptionRecord(expeted[i].Hour, date, averageValue, averageAbsoluteValue));
+					item.AverageRecords.Add(new ConsumptionRecord(expeted[i].Hour, date, averageValue, averageAbsoluteValue));
 				}
 				else
 				{
-					output.Add(date, new List<ConsumptionRecord>()
+					output.Add(new CalculatedPower(date, new List<ConsumptionRecord>() 
 					{
-						new ConsumptionRecord(expeted[i].Hour, date, averageValue, averageAbsoluteValue)			
-					});
+						new ConsumptionRecord(expeted[i].Hour, date, averageValue, averageAbsoluteValue)
+					}));
 				}
 			}
 
@@ -99,16 +100,16 @@ namespace ServiceEngine
 			return Math.Sqrt(Convert.ToDouble(value));
 		}
 
-		public decimal CalculateAbsoluteMeanDeviation(Dictionary<DateTime, List<ConsumptionRecord>> absoluteValues)
+		public decimal CalculateAbsoluteMeanDeviation(List<CalculatedPower> absoluteValues)
 		{
 			decimal sum = 0;
 			int counter = 0;
 
-			foreach (var key in absoluteValues)
+			foreach (var absoluteValue in absoluteValues)
 			{
-				foreach (var value in key.Value)
+				foreach (var averageRecord in absoluteValue.AverageRecords)
 				{
-					sum += value.AbsoluteValue;
+					sum += averageRecord.AbsoluteValue;
 					counter++;
 				}
 			}
@@ -116,16 +117,16 @@ namespace ServiceEngine
 			return decimal.Divide(sum, counter);
 		}
 
-		public double CalculateSquareDeviation(Dictionary<DateTime, List<ConsumptionRecord>> absoluteValues)
+		public double CalculateSquareDeviation(List<CalculatedPower> absoluteValues)
 		{
 			decimal sum = 0;
 			int counter = 0;
 
-			foreach (var key in absoluteValues)
+			foreach (var absoluteValue in absoluteValues)
 			{
-				foreach (var value in key.Value)
+				foreach (var averageRecord in absoluteValue.AverageRecords)
 				{
-					sum += value.AbsoluteValue;
+					sum += averageRecord.AbsoluteValue;
 					counter++;
 				}
 			}
