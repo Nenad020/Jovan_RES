@@ -47,6 +47,8 @@
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogHelper.cs" />
+    <Compile Include="Model\ConsumptionRecord.cs" />
+    <Compile Include="Model\OutputModel.cs" />
     <Compile Include="Model\PowerRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

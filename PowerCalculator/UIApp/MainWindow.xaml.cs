@@ -1,8 +1,9 @@
 ﻿using Common.FileUpload;
 using Common.Helper;
 using Common.Logging;
+using Common.Model;
 using DatabaseAccess;
-using ServiceEngine.ImportFiles;
+using ServiceEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,15 @@ namespace UIApp
 	public partial class MainWindow : Window
 	{
 		private string message;
-		public List<string> regions = new List<string>();
+
+		private OutputModel outputModel = new OutputModel();
+		private List<string> regions = new List<string>();
 
 		private DataTypeParser dataTypeParser;
 		private SqliteDataAccess sqliteDataAccess;
 		private FileDialog fileDialog;
 		private PowerImporter powerImporter;
+		private PowerConsumptionCalculator powerConsumptionCalculator;
 
 		public MainWindow()
 		{
@@ -41,6 +45,7 @@ namespace UIApp
 			sqliteDataAccess = new SqliteDataAccess();
 			fileDialog = new FileDialog(dataTypeParser);
 			powerImporter = new PowerImporter(fileDialog, sqliteDataAccess);
+			powerConsumptionCalculator = new PowerConsumptionCalculator(sqliteDataAccess, dataTypeParser);
 		}
 
 		//Otvara se prozor za odabir csv fajla za prognoziranu potrosnju
@@ -109,7 +114,7 @@ namespace UIApp
 
 			try
 			{
-				//powerImporter.CollectData(expetedPowerTextBlock.Text, actualPowerTextBlock.Text);
+				outputModel = powerConsumptionCalculator.CalculatePower(fromDate, toDate, regionComboBox.Text);
 			}
 			catch (Exception ex)
 			{

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceEngine.ImportFiles
+namespace ServiceEngine
 {
 	public class PowerImporter
 	{

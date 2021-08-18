@@ -49,12 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImportFiles\PowerImporter.cs" />
+    <Compile Include="PowerConsumptionCalculator.cs" />
+    <Compile Include="PowerImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ImportFiles\Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{6DBA424C-5020-4400-A0A7-B6C139E955AE}</Project>
