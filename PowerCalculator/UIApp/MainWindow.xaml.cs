@@ -6,18 +6,7 @@ using DatabaseAccess;
 using ServiceEngine;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace UIApp
 {
@@ -32,6 +21,7 @@ namespace UIApp
 		private List<string> regions = new List<string>();
 
 		private DataTypeParser dataTypeParser;
+		private MathHelper mathHelper;
 		private SqliteDataAccess sqliteDataAccess;
 		private FileDialog fileDialog;
 		private PowerImporter powerImporter;
@@ -42,10 +32,11 @@ namespace UIApp
 			InitializeComponent();
 
 			dataTypeParser = new DataTypeParser();
+			mathHelper = new MathHelper();
 			sqliteDataAccess = new SqliteDataAccess();
 			fileDialog = new FileDialog(dataTypeParser);
 			powerImporter = new PowerImporter(fileDialog, sqliteDataAccess);
-			powerConsumptionCalculator = new PowerConsumptionCalculator(sqliteDataAccess, dataTypeParser);
+			powerConsumptionCalculator = new PowerConsumptionCalculator(sqliteDataAccess, dataTypeParser, mathHelper);
 		}
 
 		//Otvara se prozor za odabir csv fajla za prognoziranu potrosnju
@@ -242,6 +233,7 @@ namespace UIApp
 			MessageBox.Show(message);
 		}
 
+		//Ispisujemo izracunat rezultat na ekran
 		private void WriteOutputModelOnScreen()
 		{
 			outputTextBlock.Text = string.Empty;

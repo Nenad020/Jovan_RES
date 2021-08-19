@@ -4,8 +4,6 @@ using DatabaseAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceEngine
 {
@@ -13,13 +11,16 @@ namespace ServiceEngine
 	{
 		private SqliteDataAccess sqliteDataAccess;
 		private DataTypeParser dataTypeParser;
+		private MathHelper mathHelper;
 
-		public PowerConsumptionCalculator(SqliteDataAccess sqliteDataAccess, DataTypeParser dataTypeParser)
+		public PowerConsumptionCalculator(SqliteDataAccess sqliteDataAccess, DataTypeParser dataTypeParser, MathHelper mathHelper)
 		{
 			this.sqliteDataAccess = sqliteDataAccess;
 			this.dataTypeParser = dataTypeParser;
+			this.mathHelper = mathHelper;
 		}
 
+		//Pozivamo metode za vracanje podataka iz baze, i racunamo odgovarajuce vrednosti na osnovu zadatih parametara
 		public OutputModel CalculatePower(DateTime from, DateTime to, string region)
 		{
 			List<PowerRecord> expetedPowerImporters = sqliteDataAccess.LoadRecords("ExpetedConsumption");
@@ -36,6 +37,7 @@ namespace ServiceEngine
 			return new OutputModel(calculatedPowers, calculatedMeanDeviation, calculatedSquareDeviation);
 		}
 
+		//Proveramo da li podaci iz baze upadaju u zadatati vremenski region koji smo uneli kroz UI
 		public List<PowerRecord> CheckRegionRange(DateTime from, DateTime to, string region, List<PowerRecord> powerRecords)
 		{
 			List<PowerRecord> output = new List<PowerRecord>();
@@ -53,6 +55,7 @@ namespace ServiceEngine
 			return output;
 		}
 
+		//Izracunavanje apsolutne vrednosti
 		public List<CalculatedPower> CalculateAbsoluteValues(List<PowerRecord> expeted, List<PowerRecord> actual)
 		{
 			List<CalculatedPower> output = new List<CalculatedPower>();
@@ -60,8 +63,8 @@ namespace ServiceEngine
 			for (int i = 0; i < expeted.Count; i++)
 			{
 				DateTime date = dataTypeParser.ConvertDateTimeFromString(expeted[i].Date);
-				decimal averageValue = CalculateValuePerHour(expeted[i].Load, actual[i].Load);
-				decimal averageAbsoluteValue = CalculateAbsoluteValuePerHour(averageValue);
+				decimal averageValue = mathHelper.CalculateValuePerHour(expeted[i].Load, actual[i].Load);
+				decimal averageAbsoluteValue = mathHelper.CalculateAbsoluteValuePerHour(averageValue);
 
 				CalculatedPower item = output.FirstOrDefault(x => x.Date == date);
 				if (item != null)
@@ -70,7 +73,7 @@ namespace ServiceEngine
 				}
 				else
 				{
-					output.Add(new CalculatedPower(date, new List<ConsumptionRecord>() 
+					output.Add(new CalculatedPower(date, new List<ConsumptionRecord>()
 					{
 						new ConsumptionRecord(expeted[i].Hour, date, averageValue, averageAbsoluteValue)
 					}));
@@ -80,26 +83,7 @@ namespace ServiceEngine
 			return output;
 		}
 
-		public decimal CalculateValuePerHour(int expeted, int actual)
-		{
-			return decimal.Divide(actual - expeted, actual) * 100;
-		}
-
-		public decimal CalculateAbsoluteValuePerHour(decimal value)
-		{
-			return Math.Abs(value);
-		}
-
-		public decimal CalculateSquareValue(decimal value)
-		{
-			return value * value;
-		}
-
-		public double CalculateRootOfValue(decimal value)
-		{
-			return Math.Sqrt(Convert.ToDouble(value));
-		}
-
+		//Izracunavanje apsolutne srednje devijacije
 		public decimal CalculateAbsoluteMeanDeviation(List<CalculatedPower> absoluteValues)
 		{
 			decimal sum = 0;
@@ -114,9 +98,11 @@ namespace ServiceEngine
 				}
 			}
 
-			return decimal.Divide(sum, counter);
+			//Izracunavanje proseka
+			return mathHelper.CalculateDivisionValue(sum, counter);
 		}
 
+		//Izracunavanje kvadratne devijacije
 		public double CalculateSquareDeviation(List<CalculatedPower> absoluteValues)
 		{
 			decimal sum = 0;
@@ -131,9 +117,14 @@ namespace ServiceEngine
 				}
 			}
 
-			sum = decimal.Divide(sum, counter);
-			sum = CalculateSquareValue(sum);
-			return CalculateRootOfValue(sum);
+			//Izracunavanje proseka
+			sum = mathHelper.CalculateDivisionValue(sum, counter);
+
+			//Izracunavanje kvadratne vrednosti proseka
+			sum = mathHelper.CalculateSquareValue(sum);
+
+			//Izracunavanje korena kvadratne vrednosti proseka
+			return mathHelper.CalculateRootOfValue(sum);
 		}
 	}
 }

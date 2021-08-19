@@ -1,5 +1,4 @@
 ﻿using Common.Helper;
-using Common.Logging;
 using Common.Model;
 using System;
 using System.Collections.Generic;
@@ -38,6 +37,7 @@ namespace Common.FileUpload
 			return string.Empty;
 		}
 
+		//Ucitavamo podatke iz CSV fajla
 		public List<PowerRecord> Load(string path)
 		{
 			List<PowerRecord> powerRecords = new List<PowerRecord>();
@@ -79,6 +79,7 @@ namespace Common.FileUpload
 			return powerRecords;
 		}
 
+		//Izracunate podatke smestamo u XML fajl
 		public void SaveToXML(OutputModel outputModel)
 		{
 			try
