@@ -1,8 +1,11 @@
 ﻿using Common.FileUpload;
+using Common.FileUpload.Interfaces;
 using Common.Helper;
+using Common.Helper.Interfaces;
 using Common.Logging;
 using Common.Model;
 using DatabaseAccess;
+using DatabaseAccess.Interfaces;
 using ServiceEngine;
 using System;
 using System.Collections.Generic;
@@ -20,10 +23,10 @@ namespace UIApp
 		private OutputModel outputModel = new OutputModel();
 		private List<string> regions = new List<string>();
 
-		private DataTypeParser dataTypeParser;
-		private MathHelper mathHelper;
-		private SqliteDataAccess sqliteDataAccess;
-		private FileDialog fileDialog;
+		private IDataTypeParser dataTypeParser;
+		private IMathHelper mathHelper;
+		private ISqliteDataAccess sqliteDataAccess;
+		private IFileDialog fileDialog;
 		private PowerImporter powerImporter;
 		private PowerConsumptionCalculator powerConsumptionCalculator;
 

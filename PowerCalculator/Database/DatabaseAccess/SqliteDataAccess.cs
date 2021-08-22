@@ -1,5 +1,6 @@
 ﻿using Common.Model;
 using Dapper;
+using DatabaseAccess.Interfaces;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace DatabaseAccess
 {
-	public class SqliteDataAccess
+	public class SqliteDataAccess : ISqliteDataAccess
 	{
 		//Ucitavamo sve podatke iz baze
 		//Na osnovu prosledjenog parametra znamo iz koje tabele vucemo podatke

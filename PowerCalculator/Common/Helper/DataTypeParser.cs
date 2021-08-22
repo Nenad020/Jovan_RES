@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Common.Helper.Interfaces;
+using System;
 
 namespace Common.Helper
 {
-	public class DataTypeParser
+	public class DataTypeParser : IDataTypeParser
 	{
 		//Pretvara string u broj tj int
 		public int ConvertIntFromString(string data)

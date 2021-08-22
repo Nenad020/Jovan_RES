@@ -1,6 +1,6 @@
-﻿using Common.Helper;
+﻿using Common.Helper.Interfaces;
 using Common.Model;
-using DatabaseAccess;
+using DatabaseAccess.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace ServiceEngine
 {
 	public class PowerConsumptionCalculator
 	{
-		private SqliteDataAccess sqliteDataAccess;
-		private DataTypeParser dataTypeParser;
-		private MathHelper mathHelper;
+		private ISqliteDataAccess sqliteDataAccess;
+		private IDataTypeParser dataTypeParser;
+		private IMathHelper mathHelper;
 
-		public PowerConsumptionCalculator(SqliteDataAccess sqliteDataAccess, DataTypeParser dataTypeParser, MathHelper mathHelper)
+		public PowerConsumptionCalculator(ISqliteDataAccess sqliteDataAccess, IDataTypeParser dataTypeParser, IMathHelper mathHelper)
 		{
 			this.sqliteDataAccess = sqliteDataAccess;
 			this.dataTypeParser = dataTypeParser;

@@ -43,7 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileUpload\FileDialog.cs" />
+    <Compile Include="FileUpload\Interfaces\IFileDialog.cs" />
     <Compile Include="Helper\DataTypeParser.cs" />
+    <Compile Include="Helper\Interfaces\IMathHelper.cs" />
+    <Compile Include="Helper\Interfaces\IDataTypeParser.cs" />
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\Logger.cs" />

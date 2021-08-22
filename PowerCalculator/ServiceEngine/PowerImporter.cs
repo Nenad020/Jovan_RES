@@ -1,6 +1,6 @@
-﻿using Common.FileUpload;
+﻿using Common.FileUpload.Interfaces;
 using Common.Model;
-using DatabaseAccess;
+using DatabaseAccess.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -8,10 +8,10 @@ namespace ServiceEngine
 {
 	public class PowerImporter
 	{
-		private FileDialog fileDialog;
-		private SqliteDataAccess sqliteDataAccess;
+		private IFileDialog fileDialog;
+		private ISqliteDataAccess sqliteDataAccess;
 
-		public PowerImporter(FileDialog fileDialog, SqliteDataAccess sqliteDataAccess)
+		public PowerImporter(IFileDialog fileDialog, ISqliteDataAccess sqliteDataAccess)
 		{
 			this.fileDialog = fileDialog;
 			this.sqliteDataAccess = sqliteDataAccess;

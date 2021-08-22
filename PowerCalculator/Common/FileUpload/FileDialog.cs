@@ -1,4 +1,5 @@
-﻿using Common.Helper;
+﻿using Common.FileUpload.Interfaces;
+using Common.Helper.Interfaces;
 using Common.Model;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ using System.Xml.Serialization;
 
 namespace Common.FileUpload
 {
-	public class FileDialog
+	public class FileDialog : IFileDialog
 	{
-		private DataTypeParser dataTypeParser;
+		private IDataTypeParser dataTypeParser;
 
-		public FileDialog(DataTypeParser dataTypeParser)
+		public FileDialog(IDataTypeParser dataTypeParser)
 		{
 			this.dataTypeParser = dataTypeParser;
 		}
@@ -84,7 +85,7 @@ namespace Common.FileUpload
 		{
 			try
 			{
-				XmlSerializer serializer = new XmlSerializer(typeof(OutputModel));
+				XmlSerializer serializer = new XmlSerializer(outputModel.GetType());
 				StreamWriter writer = new StreamWriter("../../../../output.xml");
 				serializer.Serialize(writer, outputModel);
 				writer.Close();
