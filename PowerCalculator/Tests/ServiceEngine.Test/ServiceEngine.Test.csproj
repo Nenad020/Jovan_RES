@@ -7,11 +7,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6EE48537-6DE4-4037-A715-CD45E9072B05}</ProjectGuid>
+    <ProjectGuid>{C81CDB51-61B3-429B-98F1-2B9C6468D62A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Common.Test</RootNamespace>
-    <AssemblyName>Common.Test</AssemblyName>
+    <RootNamespace>ServiceEngine.Test</RootNamespace>
+    <AssemblyName>ServiceEngine.Test</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -59,9 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileUpload\FileDialogTest.cs" />
-    <Compile Include="Helper\DataTypeParserTest.cs" />
-    <Compile Include="Helper\MathHelperTest.cs" />
+    <Compile Include="PowerConsumptionCalculatorTest.cs" />
+    <Compile Include="PowerImporterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,8 +68,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.csproj">
-      <Project>{6DBA424C-5020-4400-A0A7-B6C139E955AE}</Project>
+      <Project>{6dba424c-5020-4400-a0a7-b6c139e955ae}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Database\DatabaseAccess\DatabaseAccess.csproj">
+      <Project>{ab2d8531-1771-4433-bc69-f7a26eb15bc7}</Project>
+      <Name>DatabaseAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ServiceEngine\ServiceEngine.csproj">
+      <Project>{964d5b7c-48b0-470f-a6ba-86fdb8fb545b}</Project>
+      <Name>ServiceEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
