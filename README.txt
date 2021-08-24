@@ -1,3 +1,7 @@
+Pre pokretanja:
+	U okviru foldera gde se nalazi projekat, dijagram i dokumentacija projekat potrebno je dodati folder Logs
+	Kad se otvori projekat u Visual studiou potrebno je promeniti putanje u nekim fajlovima
+
 Korisni linkovi:
 	https://www.youtube.com/watch?v=ayp3tHEkRc0&ab_channel=IAmTimCorey
 	https://www.sqlite.org/datatype3.html
