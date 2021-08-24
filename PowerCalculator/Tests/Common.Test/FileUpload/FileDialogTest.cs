@@ -45,7 +45,7 @@ namespace Common.Test.FileUpload
 		[Test]
 		public void SaveToXML_TryToSaveDataToXML_ReturnsException()
 		{
-			Exception ex = Assert.Throws<Exception>(() => fileDialog.SaveToXML(null));
+			Exception ex = Assert.Throws<Exception>(() => fileDialog.SaveToXML(null, ""));
 
 			Assert.That(ex.Message == "Exporting result to xml has failed!");
 		}
@@ -53,7 +53,9 @@ namespace Common.Test.FileUpload
 		[Test]
 		public void SaveToXML_TryToSaveDataToXML_ReturnsVoid()
 		{
-			fileDialog.SaveToXML(new OutputModel());
+			string path = @"D:\Projekti\RES\Jovan_RES\output.xml";
+
+			fileDialog.SaveToXML(new OutputModel(), path);
 		}
 	}
 }

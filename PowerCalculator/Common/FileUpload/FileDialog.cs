@@ -81,12 +81,12 @@ namespace Common.FileUpload
 		}
 
 		//Izracunate podatke smestamo u XML fajl
-		public void SaveToXML(OutputModel outputModel)
+		public void SaveToXML(OutputModel outputModel, string path)
 		{
 			try
 			{
 				XmlSerializer serializer = new XmlSerializer(outputModel.GetType());
-				StreamWriter writer = new StreamWriter("../../../../output.xml");
+				StreamWriter writer = new StreamWriter(path);
 				serializer.Serialize(writer, outputModel);
 				writer.Close();
 			}

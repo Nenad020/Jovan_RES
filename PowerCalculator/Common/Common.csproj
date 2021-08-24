@@ -48,9 +48,7 @@
     <Compile Include="Helper\Interfaces\IMathHelper.cs" />
     <Compile Include="Helper\Interfaces\IDataTypeParser.cs" />
     <Compile Include="Helper\MathHelper.cs" />
-    <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Logging\LogHelper.cs" />
     <Compile Include="Model\ConsumptionRecord.cs" />
     <Compile Include="Model\OutputModel.cs" />
     <Compile Include="Model\PowerRecord.cs" />

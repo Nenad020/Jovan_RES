@@ -9,6 +9,6 @@ namespace Common.FileUpload.Interfaces
 
 		List<PowerRecord> Load(string path);
 
-		void SaveToXML(OutputModel outputModel);
+		void SaveToXML(OutputModel outputModel, string path);
 	}
 }

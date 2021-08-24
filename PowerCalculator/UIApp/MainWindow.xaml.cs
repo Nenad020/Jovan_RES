@@ -47,7 +47,7 @@ namespace UIApp
 		{
 			ResetErrorText();
 
-			LogHelper.Log(Operation.Info, "Browsing for expeted power consumption .csv file");
+			Logger.Log(Operation.Info, "Browsing for expeted power consumption .csv file");
 			expetedPowerTextBlock.Text = fileDialog.GetDialogPathName();
 		}
 
@@ -56,7 +56,7 @@ namespace UIApp
 		{
 			ResetErrorText();
 
-			LogHelper.Log(Operation.Info, "Browsing for actual power consumption .csv file");
+			Logger.Log(Operation.Info, "Browsing for actual power consumption .csv file");
 			actualPowerTextBlock.Text = fileDialog.GetDialogPathName();
 		}
 
@@ -64,7 +64,7 @@ namespace UIApp
 		private void importButton_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
-			LogHelper.Log(Operation.Info, "Validating input .csv files");
+			Logger.Log(Operation.Info, "Validating input .csv files");
 
 			if (!ValidateImportFiles())
 			{
@@ -78,12 +78,12 @@ namespace UIApp
 			catch (Exception ex)
 			{
 				errorTextBlock.Text = ex.Message;
-				LogHelper.Log(Operation.Error, ex.Message);
+				Logger.Log(Operation.Error, ex.Message);
 				return;
 			}
 
 			message = "You have successfully imported files in db!";
-			LogHelper.Log(Operation.Info, message);
+			Logger.Log(Operation.Info, message);
 			WriteSuccessfullyMessage(message);
 		}
 
@@ -91,7 +91,7 @@ namespace UIApp
 		private void calculatePower_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
-			LogHelper.Log(Operation.Info, "Calculating power consumption started!");
+			Logger.Log(Operation.Info, "Calculating power consumption started!");
 
 			if (!ValidatePowerConsumptionInputs())
 			{
@@ -113,14 +113,14 @@ namespace UIApp
 			catch (Exception ex)
 			{
 				errorTextBlock.Text = ex.Message;
-				LogHelper.Log(Operation.Error, ex.Message);
+				Logger.Log(Operation.Error, ex.Message);
 				return;
 			}
 
 			WriteOutputModelOnScreen();
 
 			message = "Calculating power consumption ended!";
-			LogHelper.Log(Operation.Info, message);
+			Logger.Log(Operation.Info, message);
 			WriteSuccessfullyMessage(message);
 		}
 
@@ -128,7 +128,7 @@ namespace UIApp
 		private void exportToXML_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
-			LogHelper.Log(Operation.Info, "Exporting result to XML!");
+			Logger.Log(Operation.Info, "Exporting result to XML!");
 
 			if (!ValidateOutputTextBlock())
 			{
@@ -137,17 +137,17 @@ namespace UIApp
 
 			try
 			{
-				fileDialog.SaveToXML(outputModel);
+				fileDialog.SaveToXML(outputModel, "../../../../output.xml");
 			}
 			catch (Exception ex)
 			{
 				errorTextBlock.Text = ex.Message;
-				LogHelper.Log(Operation.Error, ex.Message);
+				Logger.Log(Operation.Error, ex.Message);
 				return;
 			}
 
 			message = "You have successfully exported files to XML!";
-			LogHelper.Log(Operation.Info, message);
+			Logger.Log(Operation.Info, message);
 			WriteSuccessfullyMessage(message);
 		}
 
@@ -155,13 +155,13 @@ namespace UIApp
 		private void refreshRegions_Click(object sender, RoutedEventArgs e)
 		{
 			ResetErrorText();
-			LogHelper.Log(Operation.Info, "Refreshing regions combobox started!");
+			Logger.Log(Operation.Info, "Refreshing regions combobox started!");
 
 			regions.Clear();
 			regions = sqliteDataAccess.LoadRegions("ExpetedConsumption");
 
 			regionComboBox.ItemsSource = regions;
-			LogHelper.Log(Operation.Info, "Refreshing regions combobox ended!");
+			Logger.Log(Operation.Info, "Refreshing regions combobox ended!");
 		}
 
 		//Proveravamo da li su uneti import fajlovi
@@ -171,7 +171,7 @@ namespace UIApp
 			{
 				message = "Please select excel files first!";
 				errorTextBlock.Text = message;
-				LogHelper.Log(Operation.Error, message);
+				Logger.Log(Operation.Error, message);
 
 				return false;
 			}
@@ -186,7 +186,7 @@ namespace UIApp
 			{
 				message = "Please select necessary inputs first!";
 				errorTextBlock.Text = message;
-				LogHelper.Log(Operation.Error, message);
+				Logger.Log(Operation.Error, message);
 
 				return false;
 			}
@@ -201,7 +201,7 @@ namespace UIApp
 			{
 				message = "Starting date needs to be lower then finished date!";
 				errorTextBlock.Text = message;
-				LogHelper.Log(Operation.Error, message);
+				Logger.Log(Operation.Error, message);
 
 				return false;
 			}
@@ -216,7 +216,7 @@ namespace UIApp
 			{
 				message = "Output screen is empty, please calculate first power consumption then export it to XML!";
 				errorTextBlock.Text = message;
-				LogHelper.Log(Operation.Error, message);
+				Logger.Log(Operation.Error, message);
 
 				return false;
 			}
